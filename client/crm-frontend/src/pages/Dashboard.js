@@ -10,6 +10,9 @@ function Dashboard() {
 
     navigate("/login");
   };
+  const Customer = () => {
+    navigate("/Customers");
+  };
 
   return (
     <div>
@@ -18,6 +21,7 @@ function Dashboard() {
       <p>You are logged in.</p>
 
       <button onClick={logout}>Logout</button>
+      <button onClick={Customer}>Customer</button>
     </div>
   );
 }
