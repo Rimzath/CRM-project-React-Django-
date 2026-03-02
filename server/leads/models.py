@@ -5,6 +5,13 @@ from customers.models import Customer
 
 class Lead(models.Model):
 
+    STATUS_CHOICES = [
+        ("New", "New"),
+        ("Contacted", "Contacted"),
+        ("Interested", "Interested"),
+        ("Converted", "Converted"),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     name = models.CharField(max_length=255)
@@ -15,9 +22,18 @@ class Lead(models.Model):
 
     source = models.CharField(max_length=100)
 
-    status = models.CharField(max_length=100, default="New")
+    status = models.CharField(
+        max_length=50,
+        choices=STATUS_CHOICES,
+        default="New"
+    )
 
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 

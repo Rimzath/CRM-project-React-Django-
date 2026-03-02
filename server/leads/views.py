@@ -5,6 +5,8 @@ from rest_framework import status
 
 from .models import Lead
 from .serializers import LeadSerializer
+from customers.models import Customer
+from django.shortcuts import get_object_or_404
 
 
 class LeadListCreateView(APIView):
@@ -88,3 +90,32 @@ class LeadDetailView(APIView):
         lead.delete()
 
         return Response({"message": "Lead deleted"})
+
+class ConvertLeadView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+
+        lead = get_object_or_404(Lead, pk=pk, user=request.user)
+
+        if lead.status == "Converted":
+            return Response({"message": "Lead already converted"}, status=400)
+
+        # Create Customer from Lead
+        customer = Customer.objects.create(
+            user=request.user,
+            name=lead.name,
+            email=lead.email,
+            phone=lead.phone,
+        )
+
+        # Update Lead
+        lead.status = "Converted"
+        lead.customer = customer
+        lead.save()
+
+        return Response({
+            "message": "Lead converted successfully",
+            "customer_id": customer.id
+        })
