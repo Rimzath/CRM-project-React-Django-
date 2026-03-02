@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'users',
     'crm',
     'customers',
+    'leads',
 ]
 
 MIDDLEWARE = [

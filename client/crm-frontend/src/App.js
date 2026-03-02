@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
+import Leads from "./pages/Leads";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/Customers" element={<Customers />} />
+        <Route path="/leads" element={<Leads />} />
       </Routes>
     </BrowserRouter>
   );
