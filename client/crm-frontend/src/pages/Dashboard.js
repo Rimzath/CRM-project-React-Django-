@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import API from "../api/axios";
 
 function Dashboard() {
   const navigate = useNavigate();
 
+  const [stats, setStats] = useState({
+    total_customers: 0,
+    total_leads: 0,
+    converted_leads: 0,
+  });
+
+  const getStats = async () => {
+    try {
+      const res = await API.get("/dashboard/stats/");
+
+      setStats(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getStats();
+  }, []);
+
   const logout = () => {
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
+
     navigate("/login");
   };
 
@@ -14,30 +36,44 @@ function Dashboard() {
     <div className="min-h-screen bg-gray-100 p-10">
       <h1 className="text-3xl font-bold mb-8">CRM Dashboard</h1>
 
-      <div className="grid grid-cols-3 gap-6">
-        <div
+      <div className="grid grid-cols-3 gap-6 mb-10">
+        <div className="bg-white p-6 shadow rounded">
+          <h2 className="text-gray-500">Total Customers</h2>
+          <p className="text-3xl font-bold">{stats.total_customers}</p>
+        </div>
+
+        <div className="bg-white p-6 shadow rounded">
+          <h2 className="text-gray-500">Total Leads</h2>
+          <p className="text-3xl font-bold">{stats.total_leads}</p>
+        </div>
+
+        <div className="bg-white p-6 shadow rounded">
+          <h2 className="text-gray-500">Converted Leads</h2>
+          <p className="text-3xl font-bold">{stats.converted_leads}</p>
+        </div>
+      </div>
+
+      <div className="flex gap-4">
+        <button
           onClick={() => navigate("/customers")}
-          className="bg-white shadow-md p-6 rounded-lg cursor-pointer hover:shadow-xl"
+          className="bg-blue-500 text-white px-6 py-2 rounded"
         >
-          <h2 className="text-xl font-bold">Customers</h2>
-          <p className="text-gray-500">Manage all customers</p>
-        </div>
+          Manage Customers
+        </button>
 
-        <div
+        <button
           onClick={() => navigate("/leads")}
-          className="bg-white shadow-md p-6 rounded-lg cursor-pointer hover:shadow-xl"
+          className="bg-green-500 text-white px-6 py-2 rounded"
         >
-          <h2 className="text-xl font-bold">Leads</h2>
-          <p className="text-gray-500">Track potential customers</p>
-        </div>
+          Manage Leads
+        </button>
 
-        <div
+        <button
           onClick={logout}
-          className="bg-red-500 text-white p-6 rounded-lg cursor-pointer hover:bg-red-600"
+          className="bg-red-500 text-white px-6 py-2 rounded"
         >
-          <h2 className="text-xl font-bold">Logout</h2>
-          <p>Sign out of CRM</p>
-        </div>
+          Logout
+        </button>
       </div>
     </div>
   );
