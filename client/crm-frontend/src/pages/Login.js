@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { loginUser } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
@@ -29,8 +29,6 @@ function Login() {
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
 
-      alert("Login successful");
-
       navigate("/dashboard");
     } catch (error) {
       alert("Invalid credentials");
@@ -38,32 +36,47 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          CRM Login
+        </h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={handleChange}
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
 
-        <br />
-        <br />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-        />
+          <button
+            type="submit"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition"
+          >
+            Login
+          </button>
+        </form>
 
-        <br />
-        <br />
-
-        <button type="submit">Login</button>
-      </form>
+        <p className="text-center text-gray-600 mt-4">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-indigo-600 font-medium hover:underline"
+          >
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
